@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Birthday Frame Editor — Pro (drag/resize/rotate text & photo)</title>
+<title>Birthday Frame Editor — Frame Magic</title>
 
 <!-- Optional font -->
 <!-- <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"> -->
@@ -11,89 +11,206 @@
 
 <link rel="stylesheet" href="assets/css/style.css" >
 <style>
-  :root{
-    --card-bg: #ffffff;
-    --accent: #ff6b8a;
-    --muted: #6b7280;
-    --shadow: 0 10px 30px rgba(15,23,42,0.12);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; padding:28px; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(180deg,#fff8fb,#f3f7ff);
-    color:#111; display:flex; justify-content:center;
-  }
-  .container{ width:100%; max-width:1100px; display:flex; gap:18px; align-items:flex-start;}
-  .left { flex:1; }
-  .right { width:360px; }
+:root {
+  --card-bg: #ffffff;
+  --accent: #ff6b8a;
+  --muted: #6b7280;
+  --shadow: 0 10px 30px rgba(15,23,42,0.12);
+}
 
-  .card{
-    background:var(--card-bg);
-    border-radius:14px;
-    padding:14px;
-    box-shadow:var(--shadow);
-  }
+* { box-sizing: border-box; }
 
-  h1{font-size:18px;margin:0 0 10px 0}
-  label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
-  input[type=file], input[type=text], select, button { width:100%; padding:8px 10px; border-radius:8px; border:1px solid #e6eef8; }
-  .controls{ display:grid; gap:10px; }
+body {
+  margin: 0;
+  padding: 40px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #fff8fb, #f3f7ff);
+  color: #111;
+  display: flex;
+  justify-content: center;
+}
 
-  .canvas-wrap{ width:100%; height:auto; display:flex; justify-content:center; align-items:center; padding:12px; }
-  canvas{ background:#fff; border-radius:10px; max-width:100%; touch-action:none; }
+.container {
+  width: 100%;
+  max-width: 1300px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
 
-  .btn{ background:var(--accent); color:white; border:0; padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:600}
-  .btn.ghost{ background:transparent; color:var(--muted); border:1px solid #eee }
+.left {
+  flex: 1.4;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
 
-  .small{ font-size:12px; color:var(--muted) }
+.right {
+  flex: 0.8;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  position: sticky;
+  top: 20px;
+}
 
-  .row{ display:flex; gap:8px; }
-  .row > * { flex:1; }
+.card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
 
-  /* guide overlay small helper */
-  .hint { font-size:12px; color:#444; margin-top:8px }
+h1 {
+  font-size: 18px;
+  margin: 0 0 10px 0;
+}
 
-  /* toolbars */
-  .tool-title{ font-weight:700; font-size:13px; margin-bottom:6px }
-  .center { text-align:center }
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+input[type=file],
+input[type=text],
+select,
+button {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6eef8;
+}
+
+.canvas-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+canvas {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+  touch-action: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid #eee;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.row > * {
+  flex: 1;
+}
+
+.tool-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.center {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* responsive */
+@media (max-width: 992px) {
+  body { padding: 16px; }
+  .container { flex-direction: column; }
+  .right { position: static; width: 100%; }
+}
 </style>
 </head>
+
 <body>
-
 <div class="container">
-  
-  <div class="left card">
-      <button id="downloadBtn" class="btn"> Download PNG</button>
+  <!-- Left side: Canvas -->
+  <div class="left">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1>Birthday Frame Editor</h1>
+      <button id="downloadBtn" class="btn">Download PNG</button>
+    </div>
 
-             <div class="canvas-wrap">
+    <div class="canvas-wrap">
       <canvas id="editorCanvas" width="100%" height="100%"></canvas>
     </div>
-<!-- </div> -->
-    
 
-    <!-- <div class="hint">Controls: Click/touch objects to select. Drag inside object to move. Drag corner handle to resize. Drag rotate-handle above to rotate. Mouse wheel to scale selected. Arrow keys to rotate selected slightly.</div> -->
-   
- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Open Editor Tools
-</button>
-
-<div style="display:flex; gap:8px; margin-top:10px; " >
+    <div class="d-flex gap-2 mt-3">
       <button id="resetBtn" class="btn ghost">Reset</button>
       <button id="undoBtn" class="btn ghost">Undo</button>
+      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Open Tools</button>
     </div>
- <div style="margin-bottom:12px">
 
-  <div style="display:flex; gap:8px; margin-top:8px;">
-              <div class="tool-title">Text Color </div>
+    <footer>
+      Developed by <a href="https://imeshsan2008.github.io" target="_blank">Dark Venom</a>
+    </footer>
+  </div>
 
-        <input id="colorInput" type="color" value="#19100c">
-          <div class="tool-title">Text Size </div>
+  <!-- Right side: Controls -->
+  <div class="right">
+    <div>
+      <div class="mt-3">
+      <div class="tool-title">Profile Photo</div>
+      <label>Upload Image</label>
+      <input id="photoUpload" type="file" accept="image/*">
 
-        <input id="sizeInput" type="range" min="14" max="160" value="48">
+      <div class="d-flex gap-2 mt-2">
+        <!-- <button id="fitPhoto" class="btn ghost">Fit to Slot</button> -->
+        <button id="bringPhoto" class="btn ghost">Center Photo</button>
       </div>
-      <div class="tool-title">Text Font</div>
+    </div>
+      <div class="tool-title">Text Options</div>
+      <label>Enter text</label>
+      <input id="textInput" type="text" placeholder="Happy Birthday!">
 
-      <div style="display:flex; gap:8px; margin-top:8px;">
+      <div class="mt-2">
+        <div class="tool-title">Color</div>
+        <input id="colorInput" type="color" value="#19100c" class="form-control-color">
+      </div>
+
+      <div class="mt-3">
+        <div class="tool-title">Text Size</div>
+        <input id="sizeInput" type="range" min="14" max="160" value="48" class="w-100">
+      </div>
+
+      <div class="mt-3">
+        <div class="tool-title">Font</div>
         <select id="fontSelect">
           <option value="Pacifico, cursive">Pacifico (script)</option>
           <option value="Playfair Display, serif">Playfair Display</option>
@@ -101,81 +218,115 @@
           <option value="Georgia, serif">Georgia</option>
         </select>
       </div>
-      
-      </div>
-<center><small>Devoped by <a href="https://imeshsan2008.github.io">Dark Venom</a></small></center>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-    <div style="margin-bottom:10px">
-      <div class="tool-title">Frame</div>
-      <label>Default frame path loads automatically (if present). Or upload new frame PNG:</label>
-      <input id="frameUpload" type="file" accept="image/*">
-    </div>
-
-    <div style="margin-bottom:12px">
-      <div class="tool-title">Profile Photo</div>
-      <label>Upload profile image</label>
-      <input id="photoUpload" type="file" accept="image/*">
-      <div style="display:flex; gap:8px; margin-top:8px;">
-        <button id="fitPhoto" class="btn ghost">Fit to slot</button>
-        <button id="bringPhoto" class="btn ghost">Center Photo</button>
-      </div>
-    </div>
-
-   
-
-    <div style="margin-bottom:6px">
-      <div class="tool-title">Selection Info</div>
-      <div id="selInfo" class="small">No object selected</div>
-    </div>
-          <div class="tool-title">Text Layer</div>
-      <label>Text</label>
-      <input id="textInput" type="text" placeholder="Happy Birthday!">
-<div style="display:flex; gap:8px; margin-top:8px;">
-        <input id="colorInput" type="color" value="#19100c">
-        <input id="sizeInput" type="range" min="14" max="160" value="48">
-      </div>
-      <div style="display:flex; gap:8px; margin-top:8px;">
+      <div class="d-flex gap-2 mt-3">
         <button id="addTextBtn" class="btn">Add/Update Text</button>
         <button id="removeTextBtn" class="btn ghost">Remove Text</button>
       </div>
     </div>
-    <div style="margin-top:8px">
-     
-    </div>      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-      
+
+    <hr class="my-3">
+
+    <!-- <div>
+      <div class="tool-title">Frame</div>
+      <label>Upload Frame (PNG)</label>
+      <input id="frameUpload" type="file" accept="image/*">
+    </div> -->
+
+    
+
+    <hr class="my-3">
+    <div>
+      <div class="tool-title">Selection Info</div>
+      <div id="selInfo" class="small">No object selected</div>
     </div>
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editor Tools</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        (All editor tools can go here if you want a mobile-friendly floating menu)
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
+</div>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HGPH892NX4"></script>
 
 <script>
-alert("Welcome to Birthday Frame Editor Pro! Upload your profile photo and customize the text to create a personalized birthday frame. Use touch gestures or mouse interactions to move, resize, and rotate elements. Enjoy crafting your special birthday greeting!");
+onload = function() {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HGPH892NX4');
+};
+// alert("Welcome to Birthday Frame Editor Pro! Upload your profile photo and customize the text to create a personalized birthday frame. Use touch gestures or mouse interactions to move, resize, and rotate elements. Enjoy crafting your special birthday greeting!");
 const canvas = document.getElementById('editorCanvas');
 const ctx = canvas.getContext('2d', { alpha: true });
+const frames = [
+  {
+    id: 1,
+    text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },
+    framePath: 'assets/img/birthday_frame3.png',
+    profile: { width: 100, height: 100, left: 271, top: 556 }
+  },
+  {
+    id: 2,
+    text: { x: 567, y: 1214  , fontSize: 61, color: '#000',rotation: -0.12, fontFamily: 'Roboto, sans-serif' },
+    framePath: 'assets/img/birthday_frame2.png',
+    profile: { width: 120, height: 120, left: 300, top: 600, rotation: -0.11 }
+  }
+];
+
+function alert_er() {
+ alert('No frame image specified in URL.');
+window.location.href = 'home.html'; // redirect immediately after alert is closed
+
+
+
+}
+let defaultConfig;
+
+const frameimg = location.search.split('frame')[1]?decodeURIComponent(location.search.split('frame=')[1]):alert_er();
+
+console.log(frames);
+
+if(frameimg){
+switch (frameimg) {
+  case 'frame1':
+    defaultConfig = frames[0];
+    
+    break;
+ case 'frame2':
+    defaultConfig = frames[1];
+    
+    break;
+  default:
+    break;
+}
+
+}
 
 // Config defaults (from user's JSON snippet)
-const defaultConfig = {
-    text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },  
-  framePath: 'assets/img/birthday_frame3.png',
-  profile: { width: 710, height: 710, left: 271, top: 556 }
+// const defaultConfig = {
+//     text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },  
+//   framePath: 'assets/img/birthday_frame3.png',
+// profile: { width: 100, height: 100, left: 271, top: 556 }
 
-};
+// };
 
 // Elements
-const frameUpload = document.getElementById('frameUpload');
+// const frameUpload = document.getElementById('frameUpload');
 const photoUpload = document.getElementById('photoUpload');
 const photoFitBtn = document.getElementById('fitPhoto');
 const photoCenterBtn = document.getElementById('bringPhoto');
@@ -299,19 +450,19 @@ function undo() {
 }
 
 // load frame upload
-frameUpload.addEventListener('change', async e => {
-  const f = e.target.files[0]; if (!f) return;
-  const url = await fileToDataURL(f);
-  const img = new Image();
-  img.onload = () => {
-    frameImg = img;
-    // adapt canvas to frame natural size
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    render();
-  };
-  img.src = url;
-});
+// frameUpload.addEventListener('change', async e => {
+//   const f = e.target.files[0]; if (!f) return;
+//   const url = await fileToDataURL(f);
+//   const img = new Image();
+//   img.onload = () => {
+//     frameImg = img;
+//     // adapt canvas to frame natural size
+//     canvas.width = img.naturalWidth;
+//     canvas.height = img.naturalHeight;
+//     render();
+//   };
+//   img.src = url;
+// });
 
 // photo upload
 photoUpload.addEventListener('change', async e => {
@@ -329,16 +480,16 @@ photoUpload.addEventListener('change', async e => {
   img.src = url;
 });
 
-photoFitBtn.addEventListener('click', () => {
-  if (!selected || selected.type !== 'image') {
-    // find first image object
-    const imgObj = objects.find(o => o.type === 'image');
-    if (!imgObj) return alert('Upload a profile image first.');
-    selected = imgObj;
-  }
-  fitSelectedToDefaultSlot();
-  render();
-});
+// photoFitBtn.addEventListener('click', () => {
+//   if (!selected || selected.type !== 'image') {
+//     // find first image object
+//     const imgObj = objects.find(o => o.type === 'image');
+//     if (!imgObj) return alert('Upload a profile image first.');
+//     selected = imgObj;
+//   }
+//   fitSelectedToDefaultSlot();
+//   render();
+// });
 
 photoCenterBtn.addEventListener('click', () => {
   if (!selected || selected.type!=='image') {
@@ -354,7 +505,7 @@ photoCenterBtn.addEventListener('click', () => {
 addTextBtn.addEventListener('click', () => {
   pushUndo();
   let txt = (textInput.value || '').trim();
-  if (!txt) txt = 'Happy Birthday!';
+  if (!txt) txt = 'Name Here';
   const existing = objects.find(o => o.type === 'text');
   if (existing) {
     existing.text = txt;
@@ -373,7 +524,7 @@ addTextBtn.addEventListener('click', () => {
       fontSize: parseInt(sizeInput.value || defaultConfig.text.fontSize || 64),
       fontFamily: fontSelect.value || defaultConfig.text.fontFamily || 'Pacifico, cursive',
       color: colorInput.value || defaultConfig.text.color || '#19100c',
-      rotation: 0,
+      rotation: defaultConfig.text.rotation || 0,
       scale: 1
     };
     
@@ -766,21 +917,32 @@ function fileToDataURL(file) {
 
 function upsertPhotoObject(img) {
   let existing = objects.find(o => o.type === 'image');
+
   if (!existing) {
+    const naturalWidth = img.naturalWidth || 100;
+    const naturalHeight = img.naturalHeight || 100;
+
     const o = {
       id: idGen(),
       type: 'image',
       img,
-      x: defaultConfig.profile.left + defaultConfig.profile.width / 2,
-      y: defaultConfig.profile.top + defaultConfig.profile.height / 2,
-      w: defaultConfig.profile.width,
-      h: defaultConfig.profile.height,
-      rotation: 0
+      // Position stays same
+      x: defaultConfig.profile.left + naturalWidth / 2,
+      y: defaultConfig.profile.top + naturalHeight / 2,
+
+      // Auto width/height from photo
+      w: naturalWidth,
+      h: naturalHeight,
+      rotation: defaultConfig.profile.rotation || 0
     };
+
     objects.push(o);
     selected = o;
   } else {
+    // update only image (and size, if you want)
     existing.img = img;
+    existing.w = img.naturalWidth || existing.w;
+    existing.h = img.naturalHeight || existing.h;
   }
 }
 

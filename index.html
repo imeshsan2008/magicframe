@@ -1,979 +1,166 @@
-<!doctype html>
-<html lang="si">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Birthday Frame Editor — Frame Magic</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Frame Editor - Frame Magic</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous"
+  />
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffe4ec, #fff);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+    }
 
-<!-- Optional font -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> -->
+    .main-content {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+    }
 
-<link rel="stylesheet" href="assets/css/style.css" >
-<style>
-:root {
-  --card-bg: #ffffff;
-  --accent: #ff6b8a;
-  --muted: #6b7280;
-  --shadow: 0 10px 30px rgba(15,23,42,0.12);
-}
+    .logo {
+      width: 190px;
+      margin-bottom: 15px;
+    }
 
-* { box-sizing: border-box; }
+    h1 {
+      font-weight: 700;
+      color: #333;
+      font-size: 1.8rem;
+    }
 
-body {
-  margin: 0;
-  padding: 40px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg, #fff8fb, #f3f7ff);
-  color: #111;
-  display: flex;
-  justify-content: center;
-}
+    .lead {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
 
-.container {
-  width: 100%;
-  max-width: 1300px;
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-}
+    .frame-card {
+      border: none;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-.left {
-  flex: 1.4;
-  background: var(--card-bg);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  padding: 20px;
-}
+    .frame-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
-.right {
-  flex: 0.8;
-  background: var(--card-bg);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  padding: 18px;
-  position: sticky;
-  top: 20px;
-}
+    .card-img-top {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      height: 220px;
+      object-fit: cover;
+    }
 
-.card {
-  background: var(--card-bg);
-  border-radius: 14px;
-  padding: 14px;
-  box-shadow: var(--shadow);
-}
+    .btn-primary {
+      background-color: #ff6b8a;
+      border: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-h1 {
-  font-size: 18px;
-  margin: 0 0 10px 0;
-}
+    .btn-primary:hover {
+      background-color: #ff5173;
+    }
 
-label {
-  display: block;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
+    @media (max-width: 576px) {
+      .main-content {
+        padding: 25px 15px;
+      }
 
-input[type=file],
-input[type=text],
-select,
-button {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #e6eef8;
-}
+      h1 {
+        font-size: 1.4rem;
+      }
 
-.canvas-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-}
-
-canvas {
-  background: #fff;
-  border-radius: 10px;
-  max-width: 100%;
-  height: auto;
-  touch-action: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.btn {
-  background: var(--accent);
-  color: white;
-  border: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.btn.ghost {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid #eee;
-}
-
-.small {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-}
-
-.row > * {
-  flex: 1;
-}
-
-.tool-title {
-  font-weight: 700;
-  font-size: 13px;
-  margin-bottom: 6px;
-}
-
-.center {
-  text-align: center;
-}
-
-footer {
-  text-align: center;
-  margin-top: 16px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-/* responsive */
-@media (max-width: 992px) {
-  body { padding: 16px; }
-  .container { flex-direction: column; }
-  .right { position: static; width: 100%; }
-}
-</style>
+      .lead {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-  <!-- Left side: Canvas -->
-  <div class="left">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1>Birthday Frame Editor</h1>
-      <button id="downloadBtn" class="btn">Download PNG</button>
-    </div>
+  <div class="container px-3">
+    <div class="main-content mx-auto">
+      <img src="./assets/img/logo.png" alt="Frame Magic Logo" class="logo" />
+      <h1>Welcome to <span class="text-primary">Magic Frame!</span></h1>
+      <p class="lead">
+        Upload your profile photo and customize the text to create a personalized
+        birthday frame. Use touch gestures or mouse interactions to move, resize,
+        and rotate elements.
+      </p>
 
-    <div class="canvas-wrap">
-      <canvas id="editorCanvas" width="100%" height="100%"></canvas>
-    </div>
+      <h5 class="mb-3">🎉 Select a frame to get started</h5>
 
-    <div class="d-flex gap-2 mt-3">
-      <button id="resetBtn" class="btn ghost">Reset</button>
-      <button id="undoBtn" class="btn ghost">Undo</button>
-      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Open Tools</button>
-    </div>
+      <div class="row justify-content-center g-4">
+        <!-- Frame Card 1 -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card frame-card h-100">
+            <img
+              src="./assets/img/Demo/frame1.png"
+              
+              alt="Golden Luxe Birthday Frame"
+            />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-3">Golden Luxe Birthday Frame</h5>
+              <a
+                href="/frame.html?frame=frame1"
+                class="btn btn-primary mt-auto w-100"
+                >Start Editing</a
+              >
+            </div>
+          </div>
+        </div>
 
-    <footer>
-      Developed by <a href="https://imeshsan2008.github.io" target="_blank">Dark Venom</a>
-    </footer>
-  </div>
-
-  <!-- Right side: Controls -->
-  <div class="right">
-    <div>
-      <div class="mt-3">
-      <div class="tool-title">Profile Photo</div>
-      <label>Upload Image</label>
-      <input id="photoUpload" type="file" accept="image/*">
-
-      <div class="d-flex gap-2 mt-2">
-        <!-- <button id="fitPhoto" class="btn ghost">Fit to Slot</button> -->
-        <button id="bringPhoto" class="btn ghost">Center Photo</button>
-      </div>
-    </div>
-      <div class="tool-title">Text Options</div>
-      <label>Enter text</label>
-      <input id="textInput" type="text" placeholder="Happy Birthday!">
-
-      <div class="mt-2">
-        <div class="tool-title">Color</div>
-        <input id="colorInput" type="color" value="#19100c" class="form-control-color">
-      </div>
-
-      <div class="mt-3">
-        <div class="tool-title">Text Size</div>
-        <input id="sizeInput" type="range" min="14" max="160" value="48" class="w-100">
-      </div>
-
-      <div class="mt-3">
-        <div class="tool-title">Font</div>
-        <select id="fontSelect">
-          <option value="Pacifico, cursive">Pacifico (script)</option>
-          <option value="Playfair Display, serif">Playfair Display</option>
-          <option value="Arial, sans-serif">Arial</option>
-          <option value="Georgia, serif">Georgia</option>
-        </select>
-      </div>
-
-      <div class="d-flex gap-2 mt-3">
-        <button id="addTextBtn" class="btn">Add/Update Text</button>
-        <button id="removeTextBtn" class="btn ghost">Remove Text</button>
-      </div>
-    </div>
-
-    <hr class="my-3">
-
-    <!-- <div>
-      <div class="tool-title">Frame</div>
-      <label>Upload Frame (PNG)</label>
-      <input id="frameUpload" type="file" accept="image/*">
-    </div> -->
-
-    
-
-    <hr class="my-3">
-    <div>
-      <div class="tool-title">Selection Info</div>
-      <div id="selInfo" class="small">No object selected</div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Editor Tools</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        (All editor tools can go here if you want a mobile-friendly floating menu)
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- Frame Card 2 -->
+  <!-- Frame Card -->
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="card frame-card h-100">
+            <img
+              src="./assets/img/Demo/frame2.png"
+              
+              alt="Blue Purple Modern Birthday Frame"
+            />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-3">Blue Purple Modern Birthday Frame</h5>
+              <a
+                href="/magicframe/frame.html?frame=frame2"
+                class="btn btn-primary mt-auto w-100"
+                >Start Editing</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HGPH892NX4"></script>
 
-<script>
-onload = function() {
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"
+  ></script>
+  <script>onload = function() {
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-HGPH892NX4');
-};
-// alert("Welcome to Birthday Frame Editor Pro! Upload your profile photo and customize the text to create a personalized birthday frame. Use touch gestures or mouse interactions to move, resize, and rotate elements. Enjoy crafting your special birthday greeting!");
-const canvas = document.getElementById('editorCanvas');
-const ctx = canvas.getContext('2d', { alpha: true });
-const frames = [
-  {
-    id: 1,
-    text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },
-    framePath: 'assets/img/birthday_frame3.png',
-    profile: { width: 100, height: 100, left: 271, top: 556 }
-  },
-  {
-    id: 2,
-    text: { x: 567, y: 1214  , fontSize: 61, color: '#000',rotation: -0.12, fontFamily: 'Roboto, sans-serif' },
-    framePath: 'assets/img/birthday_frame2.png',
-    profile: { width: 120, height: 120, left: 300, top: 600, rotation: -0.11 }
-  }
-];
-
-function alert_er() {
- alert('No frame image specified in URL.');
-window.location.href = 'home.html'; // redirect immediately after alert is closed
-
-
-
-}
-let defaultConfig;
-
-const frameimg = location.search.split('frame')[1]?decodeURIComponent(location.search.split('frame=')[1]):alert_er();
-
-console.log(frames);
-
-if(frameimg){
-switch (frameimg) {
-  case 'frame1':
-    defaultConfig = frames[0];
-    
-    break;
- case 'frame2':
-    defaultConfig = frames[1];
-    
-    break;
-  default:
-    break;
-}
-
-}
-
-// Config defaults (from user's JSON snippet)
-// const defaultConfig = {
-//     text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },  
-//   framePath: 'assets/img/birthday_frame3.png',
-// profile: { width: 100, height: 100, left: 271, top: 556 }
-
-// };
-
-// Elements
-// const frameUpload = document.getElementById('frameUpload');
-const photoUpload = document.getElementById('photoUpload');
-const photoFitBtn = document.getElementById('fitPhoto');
-const photoCenterBtn = document.getElementById('bringPhoto');
-const downloadBtn = document.getElementById('downloadBtn');
-const resetBtn = document.getElementById('resetBtn');
-const undoBtn = document.getElementById('undoBtn');
-
-const textInput = document.getElementById('textInput');
-const fontSelect = document.getElementById('fontSelect');
-const colorInput = document.getElementById('colorInput');
-const sizeInput = document.getElementById('sizeInput');
-const addTextBtn = document.getElementById('addTextBtn');
-const removeTextBtn = document.getElementById('removeTextBtn');
-
-const selInfo = document.getElementById('selInfo');
-
-
-// State
-let frameImg = new Image();
-frameImg.crossOrigin = 'anonymous';
-frameImg.src = defaultConfig.framePath;
-
-let photoImg = null; // Image object for profile
-
-// Objects: an array — topmost last
-let objects = []; // each object: { id, type: 'image'|'text', x,y,w,h, rotation, ... }
-
-// selection
-let selected = null;
-let mode = null; // 'drag', 'resize', 'rotate'
-let pointerId = null;
-let startPointer = { x:0, y:0 };
-let startState = null;
-
-// undo
-let undoStack = [];
-let activeTouches = [];
-let gestureStartState = null;
-
-canvas.addEventListener('touchstart', (e) => {
-  if (!selected) return;
-  e.preventDefault();
-  activeTouches = Array.from(e.touches);
-  if (activeTouches.length === 2) {
-    gestureStartState = {
-      dist: getTouchDistance(activeTouches),
-      angle: getTouchAngle(activeTouches),
-      x: selected.x,
-      y: selected.y,
-      w: selected.w,
-      h: selected.h,
-      rotation: selected.rotation || 0,
-      fontSize: selected.fontSize || 64,
-    };
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchmove', (e) => {
-  if (!selected) return;
-  e.preventDefault();
-  const touches = Array.from(e.touches);
-  if (touches.length === 1 && activeTouches.length === 1) {
-    // Single finger drag (move)
-    const t = touches[0];
-    const prev = activeTouches[0];
-    const dx = (t.clientX - prev.clientX) * (canvas.width / canvas.clientWidth);
-    const dy = (t.clientY - prev.clientY) * (canvas.height / canvas.clientHeight);
-    selected.x += dx;
-    selected.y += dy;
-    activeTouches = touches;
-    render();
-  } else if (touches.length === 2 && gestureStartState) {
-    // Two finger pinch/rotate
-    const dist = getTouchDistance(touches);
-    const angle = getTouchAngle(touches);
-    const scale = dist / gestureStartState.dist;
-    const rotationDelta = angle - gestureStartState.angle;
-
-    if (selected.type === 'image') {
-      selected.w = gestureStartState.w * scale;
-      selected.h = gestureStartState.h * scale;
-    } else if (selected.type === 'text') {
-      selected.fontSize = Math.max(8, gestureStartState.fontSize * scale);
-    }
-
-    selected.rotation = gestureStartState.rotation + rotationDelta;
-    render();
-  }
-}, { passive: false });
-
-canvas.addEventListener('touchend', () => {
-  activeTouches = [];
-  gestureStartState = null;
-});
-
-function getTouchDistance(touches) {
-  const dx = touches[1].clientX - touches[0].clientX;
-  const dy = touches[1].clientY - touches[0].clientY;
-  return Math.hypot(dx, dy);
-}
-
-function getTouchAngle(touches) {
-  const dx = touches[1].clientX - touches[0].clientX;
-  const dy = touches[1].clientY - touches[0].clientY;
-  return Math.atan2(dy, dx);
-}
-// Utility functions
-function pushUndo() {
-  try {
-    const snap = JSON.stringify(objects);
-    undoStack.push(snap);
-    if (undoStack.length > 20) undoStack.shift();
-  } catch(e){}
-}
-function undo() {
-  const snap = undoStack.pop();
-  if (!snap) return;
-  objects = JSON.parse(snap);
-  selected = null;
-  render();
-}
-
-// load frame upload
-// frameUpload.addEventListener('change', async e => {
-//   const f = e.target.files[0]; if (!f) return;
-//   const url = await fileToDataURL(f);
-//   const img = new Image();
-//   img.onload = () => {
-//     frameImg = img;
-//     // adapt canvas to frame natural size
-//     canvas.width = img.naturalWidth;
-//     canvas.height = img.naturalHeight;
-//     render();
-//   };
-//   img.src = url;
-// });
-
-// photo upload
-photoUpload.addEventListener('change', async e => {
-  const f = e.target.files[0]; if (!f) return;
-  const url = await fileToDataURL(f);
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = () => {
-    photoImg = img;
-    // create or update image object
-    pushUndo();
-    upsertPhotoObject(img);
-    render();
-  };
-  img.src = url;
-});
-
-// photoFitBtn.addEventListener('click', () => {
-//   if (!selected || selected.type !== 'image') {
-//     // find first image object
-//     const imgObj = objects.find(o => o.type === 'image');
-//     if (!imgObj) return alert('Upload a profile image first.');
-//     selected = imgObj;
-//   }
-//   fitSelectedToDefaultSlot();
-//   render();
-// });
-
-photoCenterBtn.addEventListener('click', () => {
-  if (!selected || selected.type!=='image') {
-    selected = objects.find(o => o.type==='image');
-    if (!selected) return;
-  }
-  selected.x = canvas.width/2;
-  selected.y = canvas.height/2;
-  render();
-});
-
-// text controls
-addTextBtn.addEventListener('click', () => {
-  pushUndo();
-  let txt = (textInput.value || '').trim();
-  if (!txt) txt = 'Name Here';
-  const existing = objects.find(o => o.type === 'text');
-  if (existing) {
-    existing.text = txt;
-    existing.fontFamily = fontSelect.value;
-    existing.color = colorInput.value;
-    existing.fontSize = parseInt(sizeInput.value);
-    selected = existing;
-  } else {
-    const t = {
-      id: idGen(),
-      
-      type: 'text',
-      text: txt,
-      x: defaultConfig.text.x || canvas.width/2,
-      y: defaultConfig.text.y || canvas.height - 150,
-      fontSize: parseInt(sizeInput.value || defaultConfig.text.fontSize || 64),
-      fontFamily: fontSelect.value || defaultConfig.text.fontFamily || 'Pacifico, cursive',
-      color: colorInput.value || defaultConfig.text.color || '#19100c',
-      rotation: defaultConfig.text.rotation || 0,
-      scale: 1
-    };
-    
-    objects.push(t);
-    selected = t;
-  }
-  render();
-});
-
-removeTextBtn.addEventListener('click', () => {
-  pushUndo();
-  objects = objects.filter(o => o.type !== 'text');
-  selected = null;
-  render();
-});
-
-sizeInput.addEventListener('input', () => {
-  if (selected && selected.type === 'text') {
-    selected.fontSize = parseInt(sizeInput.value);
-    render();
-  }
-});
-
-colorInput.addEventListener('input', () => {
-  if (selected && selected.type === 'text') {
-    selected.color = colorInput.value;
-    render();
-  }
-});
-
-fontSelect.addEventListener('change', () => {
-  if (selected && selected.type === 'text') {
-    selected.fontFamily = fontSelect.value;
-    render();
-  }
-});
-
-
-
-// download & reset & undo
-downloadBtn.addEventListener('click', () => {
-  render(true); // ensure latest
-  const a = document.createElement('a');
-  a.href = canvas.toDataURL('image/png');
-  a.download = 'birthday_frame.png';
-  a.click();
-});
-
-resetBtn.addEventListener('click', () => {
-  if (!confirm('Reset canvas to defaults?')) return;
-  pushUndo();
-  objects = [];
-  selected = null;
-  // reset canvas size to frame img if available
-  if (frameImg && frameImg.naturalWidth) {
-    canvas.width = frameImg.naturalWidth;
-    canvas.height = frameImg.naturalHeight;
-  } else {
-    canvas.width = 900; canvas.height = 1200;
-  }
-  // reset inputs
-  textInput.value = 'Happy Birthday!';
-  colorInput.value = defaultConfig.text.color || '#19100c';
-  sizeInput.value = (defaultConfig.text.fontSize || 64);
-  fontSelect.value = 'Pacifico, cursive';
-  render();
-});
-
-undoBtn.addEventListener('click', undo);
-
-// pointer events for interaction (pointer captures for mouse+touch)
-canvas.addEventListener('pointerdown', (e) => {
-  canvas.setPointerCapture(e.pointerId);
-  pointerId = e.pointerId;
-  const p = getPointerPos(e);
-  const hit = hitTest(p.x, p.y);
-  startPointer = p;
-  startState = cloneState(selected);
-  if (hit) {
-    selected = hit.obj;
-    // determine mode by hit area
-    if (hit.area === 'body') {
-      mode = 'drag';
-    } else if (hit.area === 'corner') {
-      mode = 'resize';
-    } else if (hit.area === 'rotate') {
-      mode = 'rotate';
-    } else {
-      mode = 'drag';
-    }
-    pushUndo();
-  } else {
-    // clicked empty space -> deselect
-    selected = null;
-    mode = null;
-  }
-  render();
-});
-
-canvas.addEventListener('pointermove', (e) => {
-  const p = getPointerPos(e);
-  // cursor hint
-  const hit = hitTest(p.x, p.y);
-  if (hit) {
-    if (hit.area === 'corner') canvas.style.cursor = 'nwse-resize';
-    else if (hit.area === 'rotate') canvas.style.cursor = 'grab';
-    else canvas.style.cursor = 'move';
-  } else {
-    canvas.style.cursor = 'default';
-  }
-
-  if (!pointerId || e.pointerId !== pointerId) return;
-  if (!selected || !mode) return;
-  const dx = p.x - startPointer.x;
-  const dy = p.y - startPointer.y;
-
-  if (mode === 'drag') {
-    if (selected.type === 'image') {
-      selected.x = startState.x + dx;
-      selected.y = startState.y + dy;
-    } else if (selected.type === 'text') {
-      selected.x = startState.x + dx;
-      selected.y = startState.y + dy;
-    }
-  } else if (mode === 'resize' && selected.type === 'image') {
-    // resize image by dragging corner: compute scale change projected in object's rotated frame
-    const startCenter = { x: startState.x, y: startState.y };
-    const v0x = startPointer.x - startCenter.x;
-    const v0y = startPointer.y - startCenter.y;
-    const v1x = p.x - startCenter.x;
-    const v1y = p.y - startCenter.y;
-    const d0 = Math.hypot(v0x, v0y);
-    const d1 = Math.hypot(v1x, v1y);
-    const scale = d1 / Math.max(1, d0);
-    selected.w = Math.max(20, startState.w * scale);
-    selected.h = Math.max(20, startState.h * scale);
-  } else if (mode === 'rotate') {
-    const cx = selected.x;
-    const cy = selected.y;
-    const ang0 = Math.atan2(startPointer.y - cy, startPointer.x - cx);
-    const ang1 = Math.atan2(p.y - cy, p.x - cx);
-    const delta = ang1 - ang0;
-    selected.rotation = startState.rotation + delta;
-  } else if (mode === 'resize' && selected.type === 'text') {
-    // text resize changes font size (simple)
-    const startCenter = { x: startState.x, y: startState.y };
-    const v0 = Math.hypot(startPointer.x - startCenter.x, startPointer.y - startCenter.y);
-    const v1 = Math.hypot(p.x - startCenter.x, p.y - startCenter.y);
-    const scale = v1 / Math.max(1, v0);
-    selected.fontSize = Math.max(8, Math.round(startState.fontSize * scale));
-  }
-
-  render();
-});
-
-canvas.addEventListener('pointerup', (e) => {
-  try { canvas.releasePointerCapture(e.pointerId); } catch(e){}
-  pointerId = null;
-  mode = null;
-  render();
-});
-
-canvas.addEventListener('pointercancel', () => {
-  pointerId = null; mode = null; render();
-});
-
-// wheel interactions: scale selected (image) or font size (text)
-canvas.addEventListener('wheel', (e) => {
-  if (!selected) return;
-  e.preventDefault();
-  const delta = Math.sign(e.deltaY);
-  if (selected.type === 'image') {
-    const factor = delta < 0 ? 1.05 : 0.95;
-    selected.w = Math.max(10, selected.w * factor);
-    selected.h = Math.max(10, selected.h * factor);
-  } else if (selected.type === 'text') {
-    selected.fontSize = Math.max(8, selected.fontSize + (delta < 0 ? 2 : -2));
-  }
-  render();
-}, { passive: false });
-
-// keyboard rotate
-window.addEventListener('keydown', (e) => {
-  if (!selected) return;
-  if (e.key === 'ArrowLeft') {
-    selected.rotation = (selected.rotation || 0) - 0.05;
-    render();
-  } else if (e.key === 'ArrowRight') {
-    selected.rotation = (selected.rotation || 0) + 0.05;
-    render();
-  }
-});
-
-// helper: tell user current selection
-function updateSelInfo() {
-  if (!selected) { selInfo.textContent = 'No object selected'; return; }
-  if (selected.type === 'image') {
-    selInfo.textContent = `Selected: Photo — x:${Math.round(selected.x)} y:${Math.round(selected.y)} w:${Math.round(selected.w)} h:${Math.round(selected.h)} rot:${(selected.rotation||0).toFixed(2)}`;
-  } else {
-    selInfo.textContent = `Selected: Text — "${selected.text}" size:${selected.fontSize} x:${Math.round(selected.x)} y:${Math.round(selected.y)} rot:${(selected.rotation||0).toFixed(2)}`;
-  }
-}
-
-// drawing
-function render(final = false) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.restore();
-
-  // draw only images first (under)
-  objects.forEach(obj => {
-    if (obj.type === 'image') drawImageObject(obj);
-  });
-
-  // draw frame next (middle layer)
-  if (frameImg && frameImg.complete) {
-    ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-  }
-
-  // draw text last (top layer)
-  objects.forEach(obj => {
-    if (obj.type === 'text') drawTextObject(obj);
-  });
-
-  // selection handles
-  if (selected) drawSelectionHandles(selected);
-  updateSelInfo();
-}
-
-function drawImageObject(o) {
-  ctx.save();
-  ctx.translate(o.x, o.y);
-  ctx.rotate(o.rotation || 0);
-  // draw centered at 0,0 with width/height
-  ctx.drawImage(o.img, -o.w/2, -o.h/2, o.w, o.h);
-  ctx.restore();
-}
-
-function drawTextObject(o) {
-  ctx.save();
-  ctx.translate(o.x, o.y);
-  ctx.rotate(o.rotation || 0);
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.font = `${o.fontSize || 64}px ${o.fontFamily || 'Pacifico, cursive'}`;
-  // shadow for readability
-  ctx.fillStyle = 'rgba(0,0,0,0.12)';
-  ctx.fillText(o.text, 2, 2);
-  ctx.fillStyle = o.color || '#19100c';
-  ctx.fillText(o.text, 0, 0);
-  ctx.restore();
-}
-
-function drawSelectionHandles(o) {
-  ctx.save();
-  // selection in object space
-  ctx.translate(o.x, o.y);
-  ctx.rotate(o.rotation || 0);
-
-  if (o.type === 'image') {
-    const w = o.w, h = o.h;
-    // draw bounding rect
-    ctx.strokeStyle = 'rgba(255,100,130,0.9)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(-w/2, -h/2, w, h);
-
-    // corner handle bottom-right
-    const hs = 14;
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(w/2 - hs/2, h/2 - hs/2, hs, hs);
-    ctx.strokeStyle = '#aaa'; ctx.strokeRect(w/2 - hs/2, h/2 - hs/2, hs, hs);
-
-    // rotation handle: above center
-    const rh = 28;
-    ctx.beginPath();
-    ctx.fillStyle = '#ff6b8a';
-    ctx.arc(0, -h/2 - 30, 10, 0, Math.PI*2);
-    ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.font = '11px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('↻', 0, -h/2 - 30);
-
-  } else if (o.type === 'text') {
-    // text bounds approx (width from measure)
-    ctx.font = `${o.fontSize}px ${o.fontFamily}`;
-    const metrics = ctx.measureText(o.text || '');
-    const textW = metrics.width;
-    const textH = o.fontSize;
-    ctx.strokeStyle = 'rgba(80,110,140,0.9)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(-textW/2 - 10, -textH/2 - 8, textW + 20, textH + 16);
-
-    // corner handle
-    const hs = 12;
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(textW/2 + 2, textH/2 + 2, hs, hs);
-    ctx.strokeStyle = '#aaa'; ctx.strokeRect(textW/2 + 2, textH/2 + 2, hs, hs);
-
-    // rotation handle
-    ctx.beginPath();
-    ctx.fillStyle = '#ff6b8a';
-    ctx.arc(0, -textH/2 - 28, 9, 0, Math.PI*2);
-    ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.font = '10px sans-serif';
-    ctx.fillText('↻', 0, -textH/2 - 28);
-  }
-
-  ctx.restore();
-}
-
-function hitTest(px, py) {
-  // test from topmost to bottom
-  for (let i = objects.length - 1; i >= 0; i--) {
-    const o = objects[i];
-    ctx.save();
-    ctx.translate(o.x, o.y);
-    ctx.rotate(o.rotation || 0);
-    let area = null;
-    let hit = false;
-
-    if (o.type === 'image') {
-      const w = o.w, h = o.h;
-      const lx = (px - o.x) * Math.cos(-o.rotation || 0) - (py - o.y) * Math.sin(-o.rotation || 0);
-      const ly = (px - o.x) * Math.sin(-o.rotation || 0) + (py - o.y) * Math.cos(-o.rotation || 0);
-      if (lx >= -w / 2 && lx <= w / 2 && ly >= -h / 2 && ly <= h / 2) {
-        hit = true;
-        area = 'body';
-      }
-      // check resize handle
-      const cornerX = w / 2, cornerY = h / 2;
-      if (Math.abs(lx - cornerX) < 14 && Math.abs(ly - cornerY) < 14) {
-        hit = true;
-        area = 'corner';
-      }
-      // rotation handle
-      const rhY = -h / 2 - 30;
-      if (Math.hypot(lx, ly - rhY) < 12) {
-        hit = true;
-        area = 'rotate';
-      }
-    } else if (o.type === 'text') {
-      ctx.font = `${o.fontSize}px ${o.fontFamily}`;
-      const metrics = ctx.measureText(o.text || '');
-      const textW = metrics.width;
-      const textH = o.fontSize;
-      const lx = (px - o.x) * Math.cos(-o.rotation || 0) - (py - o.y) * Math.sin(-o.rotation || 0);
-      const ly = (px - o.x) * Math.sin(-o.rotation || 0) + (py - o.y) * Math.cos(-o.rotation || 0);
-      if (lx >= -textW / 2 - 10 && lx <= textW / 2 + 10 && ly >= -textH / 2 - 8 && ly <= textH / 2 + 8) {
-        hit = true;
-        area = 'body';
-      }
-      const rhY = -textH / 2 - 28;
-      if (Math.hypot(lx, ly - rhY) < 12) {
-        hit = true;
-        area = 'rotate';
-      }
-      if (Math.abs(lx - textW / 2) < 14 && Math.abs(ly - textH / 2) < 14) {
-        hit = true;
-        area = 'corner';
-      }
-    }
-
-    ctx.restore();
-    if (hit) return { obj: o, area };
-  }
-  return null;
-}
-
-// helpers
-function getPointerPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x: (e.clientX - rect.left) * (canvas.width / rect.width),
-    y: (e.clientY - rect.top) * (canvas.height / rect.height)
-  };
-}
-
-function fileToDataURL(file) {
-  return new Promise(res => {
-    const r = new FileReader();
-    r.onload = () => res(r.result);
-    r.readAsDataURL(file);
-  });
-}
-
-function upsertPhotoObject(img) {
-  let existing = objects.find(o => o.type === 'image');
-
-  if (!existing) {
-    const naturalWidth = img.naturalWidth || 100;
-    const naturalHeight = img.naturalHeight || 100;
-
-    const o = {
-      id: idGen(),
-      type: 'image',
-      img,
-      // Position stays same
-      x: defaultConfig.profile.left + naturalWidth / 2,
-      y: defaultConfig.profile.top + naturalHeight / 2,
-
-      // Auto width/height from photo
-      w: naturalWidth,
-      h: naturalHeight,
-      rotation: defaultConfig.profile.rotation || 0
-    };
-
-    objects.push(o);
-    selected = o;
-  } else {
-    // update only image (and size, if you want)
-    existing.img = img;
-    existing.w = img.naturalWidth || existing.w;
-    existing.h = img.naturalHeight || existing.h;
-  }
-}
-
-function fitSelectedToDefaultSlot() {
-  if (!selected || selected.type !== 'image') return;
-  selected.x = defaultConfig.profile.left + defaultConfig.profile.width / 2;
-  selected.y = defaultConfig.profile.top + defaultConfig.profile.height / 2;
-  selected.w = defaultConfig.profile.width;
-  selected.h = defaultConfig.profile.height;
-}
-
-function cloneState(o) {
-  return o ? JSON.parse(JSON.stringify(o)) : null;
-}
-
-function idGen() {
-  return Math.random().toString(36).substr(2, 9);
-}
-
-// Initial render
-frameImg.onload = () => {
-  canvas.width = frameImg.naturalWidth;
-  canvas.height = frameImg.naturalHeight;
-  render();
-};
-render();
-
-
-</script>
-
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> -->
-<script src="assets/css/script.js"></script>
+};</script>
 </body>
 </html>

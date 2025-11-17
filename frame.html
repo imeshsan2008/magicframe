@@ -188,9 +188,11 @@ footer {
 
     <footer>
       Developed by <a href="https://imeshsan2008.github.io" target="_blank">Dark Venom</a>
-     <a href='http://www.freevisitorcounters.com'>Counters</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=83b5d19de7ee6e0972833a65e0fb580a4e87d30a'></script>
+     <!-- <a href='http://www.freevisitorcounters.com'>Counters</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=83b5d19de7ee6e0972833a65e0fb580a4e87d30a'></script>
 <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1426879/t/3"></script></footer>
-      </div>
+     -->
+
+</div>
 
   <!-- Right side: Controls -->
   <div class="right">
@@ -198,7 +200,7 @@ footer {
       <div class="mt-3">
       <div class="tool-title">Profile Photo</div>
       <label>Upload Image</label>
-      <input id="photoUpload" type="file" accept="image/*">
+      <input id="photoUpload" type="file" accept="image/*" multiple>
 
       <div class="d-flex gap-2 mt-2">
         <!-- <button id="fitPhoto" class="btn ghost">Fit to Slot</button> -->
@@ -207,7 +209,7 @@ footer {
     </div>
       <div class="tool-title">Text Options</div>
       <label>Enter text</label>
-      <input id="textInput" type="text" placeholder="Happy Birthday!">
+      <input id="textInput" type="text" placeholder="Enter Name Here">
 
       <div class="mt-2">
         <div class="tool-title">Color</div>
@@ -280,7 +282,7 @@ const frames = [
   {
     id: 1,
     text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },
-    framePath: 'assets/img/birthday_frame3.png',
+    framePath: 'assets/img/birthday_frame1.png',
     profile: { width: 100, height: 100, left: 271, top: 556 }
   },
   {
@@ -288,7 +290,14 @@ const frames = [
     text: { x: 567, y: 1214  , fontSize: 61, color: '#000',rotation: -0.12, fontFamily: 'Roboto, sans-serif' },
     framePath: 'assets/img/birthday_frame2.png',
     profile: { width: 120, height: 120, left: 300, top: 600, rotation: -0.11 }
+  },
+  {
+    id: 3,
+    text: { x: 624, y: 1263, fontSize: 64, color: '#19100c', fontFamily: 'Pacifico, cursive' },
+    framePath: 'assets/img/birthday_frame3.png',
+    profile: { width: 100, height: 100, left: 271, top: 556 }
   }
+
 ];
 
 function alert_er() {
@@ -314,6 +323,12 @@ switch (frameimg) {
     defaultConfig = frames[1];
     
     break;
+ case 'frame3':
+    defaultConfig = frames[2];
+    
+    break;
+
+
   default:
     break;
 }
